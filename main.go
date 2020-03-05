@@ -52,16 +52,30 @@ func NewBlockChain() *BlockChain {
 }
 // 5.1 定义创世区块
 func GenesisBlock() *Block {
-	return NewBlock("创世区块",[]byte{})
+	return NewBlock("GenesisBlock!!!",[]byte{})
+}
+// 6. 添加区块
+// a. 创建新的区块
+// b. 添加到区块链数组中
+func (bc *BlockChain)AddBlock(data string)  {
+	// a. 创建新的区块
+	// 获取区块链的末尾区块
+	lastBlock:=bc.blocks[len(bc.blocks)-1]
+	prevHash:=lastBlock.Hash
+	block:=NewBlock(data,prevHash)
+	// b. 添加到区块链数组中
+	bc.blocks= append(bc.blocks, block)
 }
 //TODO 升级版
 // 1. 补充区块字段
 // 2. 更新计算哈希函数
 // 3. 优化代码
 func main() {
-	blockChain := NewBlockChain()
+	bc := NewBlockChain()
+	bc.AddBlock("Second Block")
+	bc.AddBlock("Third Block")
 
-	for i,block:=range blockChain.blocks{
+	for i,block:=range bc.blocks{
 		fmt.Printf("当前高度:%d\n", i)
 		fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
 		fmt.Printf("当前区块哈希值:%x\n", block.Hash)
