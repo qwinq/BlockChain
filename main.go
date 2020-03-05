@@ -1,13 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"crypto/sha256"
+	"fmt"
+)
 
 //TODO 简单版
 // 1. 定义结构  1. 前区块哈希 2. 当前区块哈希 3. 数据
 // 2. 创建区块
 // 3. 生成哈希
 // 4. 引入区块链
-// 5 .添加区块
+// 5. 添加区块
 // 6. 重构代码
 // 1. 定义结构
 type Block struct {
@@ -19,12 +22,22 @@ type Block struct {
 func NewBlock(data string, prevBlockHash []byte) *Block {
 	block := Block{
 		PrevHash: prevBlockHash,
-		Hash:     []byte{}, //预制为空,后续添加 // TODO
+		//Hash:     []byte{}, //预制为空,后续添加 // TO DO
 		Data:     []byte(data),
 	}
+	block.SetHash() // 后续添加(已完成)
 	return &block
 }
-
+// 3. 生成哈希
+func (block *Block)SetHash()  {
+	//TO DO
+	// 1. 拼装数据 (前区块hash+数据)
+	blockInfo:=append(block.PrevHash,block.Data...)
+	// 2. sha256
+	// func Sum256(data []byte) [Size]byte {
+	hash:=sha256.Sum256(blockInfo)
+	block.Hash=hash[:]
+}
 //TODO 升级版
 // 1. 补充区块字段
 // 2. 更新计算哈希函数
