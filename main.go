@@ -10,8 +10,10 @@ import (
 // 2. 创建区块
 // 3. 生成哈希
 // 4. 引入区块链
-// 5. 添加区块
-// 6. 重构代码
+// 5. 定义区块链
+// 6. 添加区块
+// 7. 重构代码
+
 // 1. 定义结构
 type Block struct {
 	// 1. 前区块哈希 2. 当前区块哈希 3. 数据
@@ -38,13 +40,33 @@ func (block *Block)SetHash()  {
 	hash:=sha256.Sum256(blockInfo)
 	block.Hash=hash[:]
 }
+// 4. 引入区块链
+type BlockChain struct {
+	// 定义区块链数组
+	blocks []*Block
+}
+// 5. 定义区块链
+func NewBlockChain() *BlockChain {
+	genesisBlock := GenesisBlock()
+	return &BlockChain{blocks:[]*Block{genesisBlock}}
+}
+// 5.1 定义创世区块
+func GenesisBlock() *Block {
+	return NewBlock("创世区块",[]byte{})
+}
 //TODO 升级版
 // 1. 补充区块字段
 // 2. 更新计算哈希函数
 // 3. 优化代码
 func main() {
-	block := NewBlock("first bitCoin", []byte{})
-	fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
-	fmt.Printf("当前区块哈希值:%x\n", block.Hash)
-	fmt.Printf("数据:%s\n", string(block.Data)) //right now
+	blockChain := NewBlockChain()
+
+	for i,block:=range blockChain.blocks{
+		fmt.Printf("当前高度:%d\n", i)
+		fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
+		fmt.Printf("当前区块哈希值:%x\n", block.Hash)
+		fmt.Printf("数据:%s\n", string(block.Data))
+	}
+
+
 }
