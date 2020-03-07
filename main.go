@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 //TODO 简单版
 // 1. 定义结构  1. 前区块哈希 2. 当前区块哈希 3. 数据
@@ -22,12 +20,21 @@ func main() {
 	bc.AddBlock("Second Block")
 	bc.AddBlock("Third Block")
 
-	for i,block:=range bc.blocks{
-		fmt.Printf("======当前高度:%d======\n", i)
-		fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
-		fmt.Printf("当前区块哈希值:%x\n", block.Hash)
-		fmt.Printf("数据:%s\n", string(block.Data))
-	}
-
-
+	//for i,block:=range bc.blocks{
+	//	fmt.Printf("======当前高度:%d======\n", i)
+	//	fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
+	//	fmt.Printf("当前区块哈希值:%x\n", block.Hash)
+	//	fmt.Printf("数据:%s\n", string(block.Data))
+	//}
+	db := OpenDB()
+	defer db.Close()
+	bytes := ViewFromDB(db, bc.tail)
+	fmt.Println(bytes)
 }
+//TODO V3
+// v3版本思路
+// 1. BlockChain结构重写 使用数据库代替数组
+// 2. NewBlockChain函数重写 由对数组操作改写成==对数据库操作==，创建数据库
+// 3. AddBlock函数重写 对数据库的读取和写入
+// 4.打印数据 对数据库的遍历（迭代器Iterator）
+// 5.命令行 1.添加区块命令 2.打印区块链命令 3.创建区块链（可选）

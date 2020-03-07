@@ -26,7 +26,7 @@ func NewProofOfWork(block *Block) *ProofOfWork{
 		block:  block,
 		//target: nil,
 	}
-	// 指定的难度值
+	// 给定难度值
 	targetStr := "0000f00000000000000000000000000000000000000000000000000000000000"
 	// 辅助变量 big.Int{}.SetString(str,16)
 	tmpInt:=big.Int{}
@@ -64,12 +64,12 @@ func (pow *ProofOfWork)Run() ([]byte,uint64) {
 		hash = sha256.Sum256(blockInfo)
 		// 3. 与pow.target比较 a.找到退出 b.没找到,随机数+1,继续找
 		tmpInt:=big.Int{}
-		bigHash := tmpInt.SetBytes(hash[:]) // [32]byte转big.Int
+		bigIntHash := tmpInt.SetBytes(hash[:]) // [32]byte转big.Int
 		//   -1 if x <  y
 		//    0 if x == y
 		//   +1 if x >  y
 		// func (x *Int) Cmp(y *Int) (r int) {
-		if bigHash.Cmp(pow.target)==-1{
+		if bigIntHash.Cmp(pow.target)==-1{
 			// a.找到退出
 			fmt.Printf("挖矿成功!hash : %x, nonce : %d\n",hash,nonce)
 			break
