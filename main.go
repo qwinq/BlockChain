@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //TODO 简单版
 // 1. 定义结构  1. 前区块哈希 2. 当前区块哈希 3. 数据
 // 2. 创建区块 NewBlock(data string, prevBlockHash []byte) *Block
@@ -17,8 +15,10 @@ import "fmt"
 // 3. 优化代码 bytes.Join(tmp, []byte(""))
 func main() {
 	bc := NewBlockChain()
-	bc.AddBlock("Second Block")
-	bc.AddBlock("Third Block")
+	cli:=CLI{bc:bc}
+	cli.Run()
+	//bc.AddBlock("Second Block")
+	//bc.AddBlock("Third Block")
 
 	//for i,block:=range bc.blocks{
 	//	fmt.Printf("======当前高度:%d======\n", i)
@@ -26,10 +26,20 @@ func main() {
 	//	fmt.Printf("当前区块哈希值:%x\n", block.Hash)
 	//	fmt.Printf("数据:%s\n", string(block.Data))
 	//}
-	db := OpenDB()
-	defer db.Close()
-	bytes := ViewFromDB(db, bc.tail)
-	fmt.Println(bytes)
+	/*it := bc.NewBcIterator()
+	for  {
+		block:=it.Next()
+
+		fmt.Println("===================")
+		fmt.Printf("前区块哈希值:%x\n", block.PrevHash)
+		fmt.Printf("当前区块哈希值:%x\n", block.Hash)
+		fmt.Printf("区块数据:%s\n", string(block.Data))
+		if block.PrevHash==nil{
+		//if len(block.PrevHash)==0{
+			break
+		}
+	}
+	*/
 }
 //TODO V3
 // v3版本思路
